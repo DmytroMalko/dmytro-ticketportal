@@ -46,6 +46,7 @@ export default function TeamForm() {
     setValue("players", newPlayers);
   };
 
+  // TODO: Add validation of duplicates teams
   const onSubmit = (data: TeamFormData) => {
     const filteredPlayers = data.players.filter((p) => p.trim() !== "");
     if (filteredPlayers.length === 0) {

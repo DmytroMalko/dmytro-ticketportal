@@ -11,6 +11,6 @@ export interface Match {
     id: string;
     teamA: string;
     teamB: string;
-    date: string;
-    score: string;
+    date: Date;
+    score?: string;
 }
