@@ -14,17 +14,16 @@ type FormData = {
 };
 
 export default function MatchForm() {
-  // validation could be added
   const { control, handleSubmit, setValue, watch } = useForm<FormData>({
     defaultValues: {
       teamA: "",
       teamB: "",
       date: new Date(),
+      // zod validation could be implemented
     },
   });
 
   const teams = useSportsStore((state) => state.teams);
-  const matches = useSportsStore((state) => state.matches);
   const addMatch = useSportsStore((state) => state.addMatch);
 
   const teamA = watch("teamA");

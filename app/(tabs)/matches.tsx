@@ -23,7 +23,7 @@ export default function MatchesScreen() {
   });
 
   const matches = useSportsStore((state) => state.matches);
-  console.log("matches :>> ", matches);
+
   const handleItemClick = (match: Match) => {
     if (!match) return;
     setOpenEditModal({ match: match, open: true });

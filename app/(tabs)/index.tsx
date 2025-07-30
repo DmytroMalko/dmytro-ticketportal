@@ -40,7 +40,7 @@ export default function HomeScreen() {
       <Text>The quote of today is:</Text>
       {quoteObject && quoteObject?.quote.length > 0 && (
         <View style={styles.box}>
-          <Text>{quoteObject?.quote}</Text>
+          <Text style={styles.quote}>{quoteObject?.quote}</Text>
           <Text style={styles.author}>Autor: {quoteObject?.author}</Text>
         </View>
       )}
@@ -57,6 +57,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  quote: {
+    fontStyle: "italic",
+    padding: 10,
+    textAlign: "center",
   },
   box: {
     alignItems: "center",
