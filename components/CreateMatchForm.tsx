@@ -27,7 +27,6 @@ export default function MatchForm() {
   const matches = useSportsStore((state) => state.matches);
   const addMatch = useSportsStore((state) => state.addMatch);
 
-  console.log("matches :>> ", matches);
   const teamA = watch("teamA");
   const teamB = watch("teamB");
   const selectedDate = watch("date");
@@ -38,6 +37,7 @@ export default function MatchForm() {
     const updatedData = {
       ...data,
       id: uniqueId,
+      date: data.date.getTime(),
     };
 
     addMatch(updatedData);

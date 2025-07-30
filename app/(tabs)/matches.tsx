@@ -6,11 +6,28 @@ import CustomModal from "@/components/CustomModal";
 import useSportsStore from "@/store/store";
 import { TeamCard } from "@/components/TeamCard";
 import CreateMatchForm from "@/components/CreateMatchForm";
+import { MatchCard } from "@/components/MatchCard";
+import { Match } from "@/types/globalTypes";
+import EditMatchForm from "@/components/EditMatchForm";
+
+interface MatchState {
+  match: null | Match;
+  open: boolean;
+}
 
 export default function MatchesScreen() {
   const [openModal, setOpenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState<MatchState>({
+    match: null,
+    open: false,
+  });
 
-  const teams = useSportsStore((state) => state.teams);
+  const matches = useSportsStore((state) => state.matches);
+  console.log("matches :>> ", matches);
+  const handleItemClick = (match: Match) => {
+    if (!match) return;
+    setOpenEditModal({ match: match, open: true });
+  };
 
   return (
     <View style={styles.container}>
@@ -20,9 +37,13 @@ export default function MatchesScreen() {
 
       <Text style={styles.title}>Matches</Text>
       <FlatList
-        data={teams}
+        data={matches}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <TeamCard team={item} />}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => handleItemClick(item)}>
+            <MatchCard match={item} />
+          </Pressable>
+        )}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
 
@@ -32,6 +53,14 @@ export default function MatchesScreen() {
         title="Modal"
       >
         <CreateMatchForm />
+      </CustomModal>
+
+      <CustomModal
+        visible={Boolean(openEditModal.open && openEditModal.match)}
+        onClose={() => setOpenEditModal({ match: null, open: false })}
+        title="Modal Edit"
+      >
+        <EditMatchForm match={openEditModal.match} />
       </CustomModal>
     </View>
   );
