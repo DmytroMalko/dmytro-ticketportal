@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSportsStore from "@/store/store";
 import uuid from "react-native-uuid";
+import { teamFormStyles } from "@/styles/formStyles";
 
 const teamSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -32,7 +33,6 @@ export default function TeamForm() {
     },
   });
   const addTeam = useSportsStore((state) => state.addTeam);
-  const teams = useSportsStore((state) => state.teams);
 
   const players = watch("players") || [];
 
@@ -64,14 +64,14 @@ export default function TeamForm() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={teamFormStyles.container}>
       <Text>Team Name</Text>
       <Controller
         control={control}
         name="name"
         render={({ field }) => (
           <TextInput
-            style={styles.input}
+            style={teamFormStyles.input}
             placeholder="Team Name"
             value={field.value}
             onChangeText={field.onChange}
@@ -79,7 +79,7 @@ export default function TeamForm() {
         )}
       />
       {errors.name && (
-        <Text style={styles.errorText}>{errors.name.message}</Text>
+        <Text style={teamFormStyles.errorText}>{errors.name.message}</Text>
       )}
 
       <Text>Logo URL</Text>
@@ -88,7 +88,7 @@ export default function TeamForm() {
         name="logo"
         render={({ field }) => (
           <TextInput
-            style={styles.input}
+            style={teamFormStyles.input}
             placeholder="Logo URL"
             value={field.value}
             onChangeText={field.onChange}
@@ -96,19 +96,19 @@ export default function TeamForm() {
         )}
       />
       {errors.logo && (
-        <Text style={styles.errorText}>{errors.logo.message}</Text>
+        <Text style={teamFormStyles.errorText}>{errors.logo.message}</Text>
       )}
 
       <Text>Players</Text>
       {players.map((player, index) => (
-        <View key={index} style={styles.playerRow}>
+        <View key={index} style={teamFormStyles.playerRow}>
           <View>
             <Controller
               control={control}
               name={`players.${index}` as const}
               render={({ field }) => (
                 <TextInput
-                  style={styles.playerInput}
+                  style={teamFormStyles.playerInput}
                   placeholder={`Player #${index + 1}`}
                   value={field.value}
                   onChangeText={field.onChange}
@@ -117,7 +117,7 @@ export default function TeamForm() {
             />
 
             {errors.players?.[index] && (
-              <Text style={styles.errorTextSmall}>
+              <Text style={teamFormStyles.errorTextSmall}>
                 {errors.players[index]?.message}
               </Text>
             )}
@@ -125,11 +125,11 @@ export default function TeamForm() {
           <Pressable
             onPress={() => removePlayer(index)}
             style={({ pressed }) => [
-              styles.removeButton,
-              pressed && styles.removeButtonPressed,
+              teamFormStyles.removeButton,
+              pressed && teamFormStyles.removeButtonPressed,
             ]}
           >
-            <Text style={styles.buttonText}>Remove</Text>
+            <Text style={teamFormStyles.buttonText}>Remove</Text>
           </Pressable>
         </View>
       ))}
@@ -137,88 +137,22 @@ export default function TeamForm() {
       <Pressable
         onPress={addPlayer}
         style={({ pressed }) => [
-          styles.addButton,
-          pressed && styles.addButtonPressed,
+          teamFormStyles.addButton,
+          pressed && teamFormStyles.addButtonPressed,
         ]}
       >
-        <Text style={styles.buttonText}>Add Player</Text>
+        <Text style={teamFormStyles.buttonText}>Add Player</Text>
       </Pressable>
 
       <Pressable
         onPress={handleSubmit(onSubmit)}
         style={({ pressed }) => [
-          styles.submitButton,
-          pressed && styles.submitButtonPressed,
+          teamFormStyles.submitButton,
+          pressed && teamFormStyles.submitButtonPressed,
         ]}
       >
-        <Text style={styles.buttonText}>Submit</Text>
+        <Text style={teamFormStyles.buttonText}>Submit</Text>
       </Pressable>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  input: {
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 8,
-    borderRadius: 4,
-  },
-  errorText: {
-    color: "red",
-    marginBottom: 10,
-  },
-  errorTextSmall: {
-    color: "red",
-    marginLeft: 10,
-    maxWidth: 170,
-  },
-  playerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  playerInput: {
-    borderWidth: 1,
-    width: 170,
-    marginRight: 10,
-    padding: 8,
-    borderRadius: 4,
-  },
-  removeButton: {
-    backgroundColor: "#ff6666",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 4,
-  },
-  removeButtonPressed: {
-    backgroundColor: "#ff4d4d",
-  },
-  addButton: {
-    backgroundColor: "#4CAF50",
-    padding: 12,
-    borderRadius: 6,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  addButtonPressed: {
-    backgroundColor: "#4CAF50AA",
-  },
-  submitButton: {
-    backgroundColor: "#2196F3",
-    padding: 14,
-    borderRadius: 6,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  submitButtonPressed: {
-    backgroundColor: "#2196F3AA",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-});
