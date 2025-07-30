@@ -14,6 +14,7 @@ interface FormData {
 }
 
 const EditMatchForm: React.FC<EditMatchFormProps> = ({ match }) => {
+  //Rgex validaion could be added for score
   const {
     control,
     handleSubmit,
